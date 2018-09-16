@@ -1,0 +1,79 @@
+# script da sourceare affinché possa editare il path dell'ambiente corrente
+# attenzione che al momento NON acetta path contenenti spazi. Dovrei imparare ad usare i vettori...
+
+function _addpath(){
+
+[ $# -eq 0 ] && { echo "Usage: $0 [-a] dir"; exit 1; }
+
+OPTS=""
+DIRS=""
+OLDPATH=""
+NEWPATH=""
+
+###
+append=0
+###
+
+k=1
+for i in "$@"
+do
+ if [ -z "$(echo x$i | egrep '^x-')" ]; then
+  if [ $k = 1 ]; then DIRS="${i}"
+  else DIRS="$DIRS $i"
+  fi
+  k=$((k+1))
+ else
+  if [ ! -z "$(echo x$i | egrep -v '^x-[a]$')" ]; then
+   echo "Opzione $i non valida"
+   exit 1
+  else
+   case "$i" in
+    -a) append=1;;
+   esac
+   OPTS="${OPTS}${i} "
+  fi
+ fi
+done
+
+if [ -z "$DIRS" ]; then exit 0; fi;
+
+k=1
+for i in $DIRS
+do
+ if [ $k -eq 1 ]; then
+  NEWPATH="$i"
+ else
+  NEWPATH="$NEWPATH:$i"
+ fi 
+ k=$((k+1)) 
+done
+
+k=1
+for i in $(echo $PATH | awk -F : '{for(x=1;x<=NF;x++)print $x" "}'); do
+ present=0
+ for j in $DIRS; do
+  if [ "$i" = "$j" ]; then
+   present=1
+   break
+  fi
+ done
+
+ if [ $present = 0 ]; then
+  if [ $k = 1 ]; then OLDPATH="$i";
+  else OLDPATH="$OLDPATH:$i"
+  fi
+  k=$((k+1))
+ fi
+done
+
+if [ $append = 0 ]; then
+ PATH="$NEWPATH":"$OLDPATH"
+else
+ PATH="$OLDPATH":"$NEWPATH"
+fi
+
+unset i j k present OLDPATH NEWPATH OPTS DIRS
+
+}
+
+_addpath "$@"
