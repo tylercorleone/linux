@@ -31,8 +31,8 @@ function hist {
     history | grep -i "${1}"
 }
 
-alias 'ps-rss'='ps -eo ppid,pid,pcpu,args,rss --sort rss'
-alias 'ps-cpu'='ps -eo ppid,pid,pcpu,args,rss --sort pcpu'
+alias 'ps-rss'='ps -eo ppid,pid,pcpu,rss,args --sort rss'
+alias 'ps-cpu'='ps -eo ppid,pid,pcpu,rss,args --sort pcpu'
 
 #
 # # ex - archive extractor
