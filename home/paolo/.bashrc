@@ -56,6 +56,11 @@ ex ()
   fi
 }
 
+# basic calculator
+function calc {
+  echo $(echo "scale=6;$@;" | bc)
+}
+
 ####################
 #  COLORED OUTPUT  #
 ####################
