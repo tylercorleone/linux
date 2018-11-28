@@ -19,9 +19,6 @@ export HISTCONTROL=ignoredups
 # english language locale
 export LANG=en_US.UTF-8
 
-# non funzia... ma ho creato lo script "calc"
-#alias bc='echo "scale=3;" | bc'
-
 # history auto completion
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
@@ -58,3 +55,21 @@ ex ()
     echo "'$1' is not a valid file"
   fi
 }
+
+####################
+#  COLORED OUTPUT  #
+####################
+
+alias diff='diff --color=auto'
+alias grep='grep --color=auto'
+alias ls='ls --color=auto'
+# less
+export LESS=-R
+export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
+export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
+export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
+export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
+export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+
