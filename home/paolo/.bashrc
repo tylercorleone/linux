@@ -7,12 +7,6 @@
 
 . "/home/paolo/script/addpath" -a "/home/paolo/script"
 
-# fancy prompt and output
-SADFACE_ONERROR='$(if [[ $? != 0 ]]; then echo "\[\033[01;31m\];( "; fi)'
-#PS1=${SADFACE_ONERROR}'\e[0m\[\e[1m\][\[\e[1;32m\]\u\[\e[0m\]\[\e[1m\] \w]\$ '
-trap 'printf "\e[2m"' DEBUG
-PS1=${SADFACE_ONERROR}'\[\e[0m\][\[\e[1;32m\]\u\[\e[0m\] \w]\$ '
-
 # to stop logging of repeated identical commands
 export HISTCONTROL=ignoredups
 
@@ -78,3 +72,11 @@ export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e ' /^[^*]/d' -e 's/* \(.*\)/ (\1)/ '
+}
+
+# fancy prompt and output
+SADFACE_ONERROR='$(if [[ $? != 0 ]]; then echo "\[\033[01;31m\];( "; fi)'
+trap 'printf "\e[2m"' DEBUG
+PS1=${SADFACE_ONERROR}'\[\e[0m\][\[\e[1;32m\]\u\[\e[0m\] \w]\[\033[0;33m\]$(parse_git_branch)\[\033[00m\]\$ '
